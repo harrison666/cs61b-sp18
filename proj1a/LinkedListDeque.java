@@ -1,4 +1,4 @@
-public class LinkedListDeque <T>{
+public class LinkedListDeque<T> {
     private class StuffNode {
         public T item;
         public StuffNode prev;
@@ -44,7 +44,7 @@ public class LinkedListDeque <T>{
 
     public void printDeque() {
         StuffNode temp = sentinel;
-        while(temp.next.item != null) {
+        while (temp.next.item != null) {
             System.out.print(temp.next.item);
             System.out.print(" ");
             temp = temp.next;
@@ -77,6 +77,17 @@ public class LinkedListDeque <T>{
             temp = temp.next;
         }
         return null;
+    }
+
+    private T getRecursive(int index, StuffNode curr) {
+        if (index== 0) {
+            return curr.item;
+        }
+        return getRecursive(index - 1, curr.next);
+    }
+
+    public T getRecursive(int index) {
+        return getRecursive(index, sentinel.next);
     }
 
 
