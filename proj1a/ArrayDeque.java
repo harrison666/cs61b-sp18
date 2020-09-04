@@ -5,6 +5,7 @@ public class ArrayDeque<T> {
     private int nextLast;
 
     public ArrayDeque() {
+        // Java does not allow to create new generic array directly. So need cast.
         items = (T[]) new Object[8];
         size = 0;
         nextFirst = items.length - 1;
@@ -46,49 +47,41 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.print(items[plusOne(nextFirst + i)] + " ");
         }
     }
 
     private int plusOne(int i) {
-        if (i + 1 < items.length) {
-            return i + 1;
-        }
-        return i + 1 - items.length;
+        return (i + 1) % items.length;
     }
 
     private int minusOne(int i) {
-        if (i - 1 >= 0) {
-            return i - 1;
-        }
-        return i - 1 + items.length;
+        return (i - 1 + items.length) % items.length;
     }
 
 
     public T removeFirst() {
-        if (isEmpty()) {
-            return null;
-        }
-        T res = items[plusOne(nextFirst)];
-        items[plusOne(nextFirst)] = null;
         nextFirst = plusOne(nextFirst);
-        size -= 1;
-        if (items.length >= 16 && size < items.length / 4) {
+        T res = items[nextFirst];
+        items[nextFirst] = null;
+        if (!isEmpty()) {
+            size -= 1;
+        }
+        if (items.length >= 16 && size < (items.length / 4)) {
             resize(size / 2);
         }
         return res;
     }
 
     public T removeLast() {
-        if (isEmpty()) {
-            return null;
-        }
-        T res = items[minusOne(nextLast)];
-        items[minusOne(nextLast)] = null;
         nextLast = minusOne(nextLast);
-        size -= 1;
-        if (items.length >= 16 && size < items.length / 4) {
+        T res = items[nextLast];
+        items[nextLast] = null;
+        if (!isEmpty()) {
+            size -= 1;
+        }
+        if (items.length >= 16 && size < (items.length / 4)) {
             resize(size / 2);
         }
         return res;
@@ -98,10 +91,7 @@ public class ArrayDeque<T> {
         if (index >= size) {
             return null;
         }
-        if (nextFirst + 1 + index >= items.length) {
-            return items[nextFirst + 1 + index - items.length];
-        }
-        return items[nextFirst + 1 + index];
+        return items[(nextFirst + 1 + index) % items.length];
     }
 
 
