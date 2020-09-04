@@ -18,6 +18,7 @@ public class ArrayDeque<T> {
                          a, nextFirst + 1 + a.length - items.length,
                   items.length - nextFirst - 1);
         items = a;
+        nextFirst = nextFirst + a.length - items.length;
     }
 
     public void addFirst(T item) {
@@ -69,7 +70,7 @@ public class ArrayDeque<T> {
             size -= 1;
         }
         if (items.length >= 16 && size < (items.length / 4)) {
-            resize(size / 2);
+            resize(items.length / 2);
         }
         return res;
     }
@@ -82,7 +83,7 @@ public class ArrayDeque<T> {
             size -= 1;
         }
         if (items.length >= 16 && size < (items.length / 4)) {
-            resize(size / 2);
+            resize(items.length / 2);
         }
         return res;
     }
