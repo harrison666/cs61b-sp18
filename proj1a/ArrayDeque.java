@@ -13,7 +13,9 @@ public class ArrayDeque<T> {
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
         System.arraycopy(items, 0, a, 0, nextLast);
-        System.arraycopy(items, nextFirst + 1, a, nextFirst + 1 + a.length - items.length, items.length - nextFirst - 1);
+        System.arraycopy(items, nextFirst + 1,
+                         a, nextFirst + 1 + a.length - items.length,
+                  items.length - nextFirst - 1);
         items = a;
     }
 
@@ -49,14 +51,14 @@ public class ArrayDeque<T> {
         }
     }
 
-    public int plusOne(int i) {
+    private int plusOne(int i) {
         if (i + 1 < items.length) {
             return i + 1;
         }
         return i + 1 - items.length;
     }
 
-    public int minusOne(int i) {
+    private int minusOne(int i) {
         if (i - 1 >= 0) {
             return i - 1;
         }
@@ -65,7 +67,7 @@ public class ArrayDeque<T> {
 
 
     public T removeFirst() {
-        if (!isEmpty()) {
+        if (isEmpty()) {
             return null;
         }
         T res = items[plusOne(nextFirst)];
@@ -79,6 +81,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
         T res = items[minusOne(nextLast)];
         items[minusOne(nextLast)] = null;
         nextLast = minusOne(nextLast);
