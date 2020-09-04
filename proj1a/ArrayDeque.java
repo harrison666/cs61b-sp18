@@ -12,18 +12,21 @@ public class ArrayDeque<T> {
         nextLast = 0;
     }
     private void resize(int capacity) {
-        T[] a = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, a, 0, nextLast);
-        System.arraycopy(items, nextFirst + 1,
-                         a, nextFirst + 1 + a.length - items.length,
-                  items.length - nextFirst - 1);
-        items = a;
-        nextFirst = nextFirst + a.length - items.length;
+        T[] newDeque = (T[]) new Object[capacity];
+        int oldIndex = plusOne(nextFirst); // the index of the first item in original deque
+        for (int newIndex = 0; newIndex < size; newIndex++) {
+            newDeque[newIndex] = items[oldIndex];
+            oldIndex = plusOne(oldIndex);
+        }
+        items = newDeque;
+        nextFirst = capacity - 1; // since the new deque is starting from true 0 index.
+        nextLast = size;
+
     }
 
     public void addFirst(T item) {
         if (size == items.length) {
-            resize(size * 2);
+            resize(items.length * 2);
         }
         items[nextFirst] = item;
         nextFirst = minusOne(nextFirst);
@@ -32,7 +35,7 @@ public class ArrayDeque<T> {
 
     public void addLast(T item) {
         if (size == items.length) {
-            resize(size * 2);
+            resize(items.length * 2);
         }
         items[nextLast] = item;
         nextLast = plusOne(nextLast);
