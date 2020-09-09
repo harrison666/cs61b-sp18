@@ -29,6 +29,6 @@ public class Palindrome {
             return true;
         }
         Deque<Character> d = wordToDeque(word);
-        return (Math.abs(d.removeFirst() - d.removeLast()) == 1 && isPalindrome(word.substring(1, word.length() - 1), cc));
+        return (cc.equalChars(d.removeFirst(), d.removeLast()) && isPalindrome(word.substring(1, word.length() - 1), cc));
     }
 }
