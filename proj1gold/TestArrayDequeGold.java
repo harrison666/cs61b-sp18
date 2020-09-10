@@ -11,16 +11,28 @@ public class TestArrayDequeGold {
         for (int i = 0; i < 1000; i += 1) {
             double numberBetweenZeroAndOne = StdRandom.uniform();
 
-            if (numberBetweenZeroAndOne < 0.25 && !sad1.isEmpty() && !ads1.isEmpty()) {
-                Integer expected = ads1.removeLast();
-                Integer actual = sad1.removeLast();
-                message += "removeLast(): " + actual + "\n";
+            if (numberBetweenZeroAndOne < 0.25) {
+                Integer expected = ads1.size();
+                Integer actual = sad1.size();
+                message += "size(): " + actual + "\n";
                 assertEquals(message, expected, actual);
-            } else if (numberBetweenZeroAndOne < 0.5 && !sad1.isEmpty() && !ads1.isEmpty()){
-                Integer expected = ads1.removeFirst();
-                Integer actual = sad1.removeFirst();
-                message += "removeFirst(): " + actual + "\n";
+                if (actual > 0) {
+                    expected = ads1.removeLast();
+                    actual = sad1.removeLast();
+                    message += "removeLast(): " + actual + "\n";
+                    assertEquals(message, expected, actual);
+                }
+            } else if (numberBetweenZeroAndOne < 0.5){
+                Integer expected = ads1.size();
+                Integer actual = sad1.size();
+                message += "size(): " + actual + "\n";
                 assertEquals(message, expected, actual);
+                if (actual > 0) {
+                    expected = ads1.removeFirst();
+                    actual = sad1.removeFirst();
+                    message += "removeLast(): " + actual + "\n";
+                    assertEquals(message, expected, actual);
+                }
             } else if (numberBetweenZeroAndOne < 0.75) {
                 sad1.addLast(i);
                 ads1.addLast(i);
