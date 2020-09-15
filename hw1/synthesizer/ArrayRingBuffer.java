@@ -75,7 +75,10 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      */
     public T peek() {
         // DONE: Return the first item. None of your instance variables should change.
-            return rb[first];
+        if (isEmpty()) {
+            throw new RuntimeException("Ring buffer underflow");
+        }
+        return rb[first];
     }
 
     // DONE: When you get to part 5, implement the needed code to support iteration.
