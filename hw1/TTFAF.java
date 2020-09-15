@@ -12,7 +12,7 @@ import java.util.zip.GZIPInputStream;
  */
 public class TTFAF {
     public static void main(String[] args) {
-        try {
+       try {
             InputStream source = new ByteArrayInputStream(Base64.getDecoder().decode(TTFAF));
             source = new GZIPInputStream(source);
             GuitarPlayer player = new GuitarPlayer(source);
