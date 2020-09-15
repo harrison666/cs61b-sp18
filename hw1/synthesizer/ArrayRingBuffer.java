@@ -1,6 +1,4 @@
 package synthesizer; // DONE: Make sure to make this class a part of the synthesizer package
-// package <package name>;
-import synthesizer.AbstractBoundedQueue;
 
 import java.util.Iterator;
 
@@ -44,7 +42,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         fillCount++;
         if (last + 1 == capacity) {
             last = 0;
-        }else {
+        } else {
             last++;
         }
     }
@@ -64,7 +62,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         fillCount--;
         if (first + 1 == capacity) {
             first = 0;
-        }else {
+        } else {
             first++;
         }
         return res;

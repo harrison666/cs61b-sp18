@@ -1,4 +1,4 @@
-package synthesizer;// DONE: Make sure to make this class a part of the synthesizer package
+package synthesizer; // DONE: Make sure to make this class a part of the synthesizer package
 //package <package name>;
 
 //Make sure this class is public
