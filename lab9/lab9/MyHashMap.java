@@ -78,7 +78,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public Set<K> keySet() {
         Set<K> res = null;
         for (ArrayMap<K,V> bucket : buckets) {
-            res.addAll(bucket.keySet());
+            if (bucket != null) {
+                res.addAll(bucket.keySet());
+            }
         }
         return res;
     }
@@ -88,7 +90,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * UnsupportedOperationException. */
     @Override
     public V remove(K key) {
-        return buckets[hash(key)].remove(key);
+        if (get(key) != null) {
+            return buckets[hash(key)].remove(key);
+        }
+        return null;
     }
 
     /* Removes the entry for the specified key only if it is currently mapped to
