@@ -1,5 +1,6 @@
 package lab9;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -59,10 +60,28 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
+        if (loadFactor() > MAX_LF) {
+            resize();
+        }
         if (get(key) == null) {
             size++;
         }
         buckets[hash(key)].put(key, value);
+    }
+
+    private void resize() {
+        ArrayMap<K, V>[] oldBuckets = buckets;
+        buckets = new ArrayMap[oldBuckets.length * 2];
+        for (int i = 0; i < buckets.length; i += 1) {
+            this.buckets[i] = new ArrayMap<>();
+        }
+        for (ArrayMap<K, V> oldBucket : oldBuckets) {
+            for (K key : oldBucket.keySet()) {
+                V value = oldBucket.get(key);
+                buckets[hash(key)].put(key, value);
+            }
+        }
+
     }
 
     /* Returns the number of key-value mappings in this map. */
@@ -76,10 +95,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        Set<K> res = null;
+        Set<K> res = new HashSet<>();
         for (ArrayMap<K,V> bucket : buckets) {
-            if (bucket != null) {
-                res.addAll(bucket.keySet());
+            for (K key : bucket.keySet()) {
+                res.add(key);
             }
         }
         return res;
@@ -90,7 +109,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * UnsupportedOperationException. */
     @Override
     public V remove(K key) {
-        if (get(key) != null) {
+        if (containsKey(key)) {
+            size--;
             return buckets[hash(key)].remove(key);
         }
         return null;
@@ -102,6 +122,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public V remove(K key, V value) {
         if (get(key).equals(value)) {
+            size--;
             return buckets[hash(key)].remove(key);
         } else {
             return null;
