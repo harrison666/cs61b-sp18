@@ -1,8 +1,6 @@
 package lab9;
 
-import edu.princeton.cs.algs4.SET;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -50,11 +48,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     private V getHelper(K key, Node p) {
         if (p == null) {
             return null;
-        } else if (key.compareTo(p.key) == 0){
+        } else if (key.compareTo(p.key) == 0) {
             return p.value;
-        } else if (key.compareTo(p.key) < 0){
+        } else if (key.compareTo(p.key) < 0) {
             return getHelper(key, p.left);
-        } else{
+        } else {
             return getHelper(key, p.right);
         }
     }
