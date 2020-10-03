@@ -2,6 +2,8 @@ package lab9;
 
 import edu.princeton.cs.algs4.SET;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -99,21 +101,22 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
 
     /* Return a Set of keys of given node p*/
-    private Set<K> keySetHelper(Node p) {
-        Set<K> res = null;
+    private Set<K> keySetHelper(Set<K> keySet, Node p) {
         if (p == null) {
             return null;
         } else {
-            res.add(p.key);
-            res.addAll(keySetHelper(p.left));
-            res.addAll(keySetHelper(p.right));
+            keySet.add(p.key);
+            keySet.addAll(keySetHelper(keySet, p.left));
+            keySet.addAll(keySetHelper(keySet, p.right));
         }
-        return res;
+        return keySet;
     }
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        return keySetHelper(root);
+        Set<K> keySet= new HashSet<>();
+        keySetHelper(keySet, root);
+        return keySet;
     }
 
     /* Return the value of the given key in the given node p */
@@ -121,7 +124,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (p == null) {
             return p;
         } else if (key.compareTo(p.key) == 0) {
-            if (p.left == null) {
+            if (p.left == null && p.right == null) {
+                return null;
+            } else if (p.left == null) {
                 return p.right;
             } else if (p.right == null) {
                 return p.left;
