@@ -101,15 +101,14 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
 
     /* Return a Set of keys of given node p*/
-    private Set<K> keySetHelper(Set<K> keySet, Node p) {
+    private void keySetHelper(Set<K> keySet, Node p) {
         if (p == null) {
-            return null;
+            return;
         } else {
             keySet.add(p.key);
-            keySet.addAll(keySetHelper(keySet, p.left));
-            keySet.addAll(keySetHelper(keySet, p.right));
+            keySetHelper(keySet, p.left);
+            keySetHelper(keySet, p.right);
         }
-        return keySet;
     }
     /* Returns a Set view of the keys contained in this map. */
     @Override
@@ -121,9 +120,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     /* Return the value of the given key in the given node p */
     private Node removeHelper(K key, Node p) {
-        if (p == null) {
-            return p;
-        } else if (key.compareTo(p.key) == 0) {
+        if (key.compareTo(p.key) == 0) {
             if (p.left == null && p.right == null) {
                 return null;
             } else if (p.left == null) {
@@ -131,7 +128,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             } else if (p.right == null) {
                 return p.left;
             } else {
-                p.key = minKey(p);
+                p.key = minKey(p.right);
                 p.right = removeHelper(p.key, p.right);
             }
         } else if (key.compareTo(p.key) < 0) {
