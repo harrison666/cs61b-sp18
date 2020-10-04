@@ -19,6 +19,7 @@ public class PercolationStats {
         this.N = N;
         this.T = T;
         this.pf = pf;
+        simulate();
     }
 
     private void simulate() {
