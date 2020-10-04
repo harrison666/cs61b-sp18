@@ -4,17 +4,13 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import org.junit.Assert;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Percolation {
     private Site[][] world;
     private int openNumber;
     private final int N;
-    private WeightedQuickUnionUF dSet;
-    private Set<Integer> top = new HashSet<>();
-    private Set<Integer> bottom = new HashSet<>();
-    private boolean percolated = false;
+    private WeightedQuickUnionUF dSet1;
+    private WeightedQuickUnionUF dSet2;
 
     private class Site {
         private int x;
@@ -41,7 +37,9 @@ public class Percolation {
                 world[i][j] = new Site(i, j);
             }
         }
-        dSet = new WeightedQuickUnionUF(N * N);
+        dSet1 = new WeightedQuickUnionUF(N * N + 2);
+        dSet2 = new WeightedQuickUnionUF(N * N + 1);
+
     }
 
     // transfer the 2D location to 1D integer
@@ -59,17 +57,14 @@ public class Percolation {
         }
         world[row][col].isOpen = true;
         openNumber++;
-        unionNeighbors(row, col);
         if (row == 0) {
-            top.add(xyTo1D(row, col));
+            dSet1.union(N * N, xyTo1D(row, col));
+            dSet2.union(N * N, xyTo1D(row, col));
         }
         if (row == N - 1) {
-            bottom.add(xyTo1D(row, col));
+            dSet1.union(N * N + 1, xyTo1D(row, col));
         }
-
-        if (top.contains(xyTo1D(row, col)) && bottom.contains(xyTo1D(row, col))) {
-            percolated = true;
-        }
+        unionNeighbors(row, col);
     }
 
     private ArrayList<Site> findNeighbors(int row, int col) {
@@ -93,14 +88,9 @@ public class Percolation {
     private void unionNeighbors(int row, int col) {
         ArrayList<Site> neighbors = findNeighbors(row, col);
         for (Site neighbor : neighbors) {
-            if (isOpen(neighbor.x, neighbor.y)) {
-                dSet.union(xyTo1D(neighbor.x, neighbor.y), xyTo1D(row, col));
-                if (top.contains(xyTo1D(neighbor.x, neighbor.y))) {
-                    top.add(xyTo1D(row, col));
-                }
-                if (bottom.contains(xyTo1D(neighbor.x, neighbor.y))) {
-                    bottom.add(xyTo1D(row, col));
-                }
+            if (neighbor.isOpen) {
+                dSet1.union(xyTo1D(neighbor.x, neighbor.y), xyTo1D(row, col));
+                dSet2.union(xyTo1D(neighbor.x, neighbor.y), xyTo1D(row, col));
             }
         }
     }
@@ -118,7 +108,7 @@ public class Percolation {
         if (row < 0 || row >= N || col < 0 || col >= N) {
             throw new IndexOutOfBoundsException();
         }
-        return top.contains(xyTo1D(row, col));
+        return dSet2.connected(N * N, xyTo1D(row, col));
     }
 
     // number of open sites
@@ -128,24 +118,50 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return percolated;
+        return dSet1.connected(N * N, N * N + 1);
     }
 
     // use for unit testing (not required)
     public static void main(String[] args) {
         Percolation myWorld = new Percolation(5);
         myWorld.open(0, 1);
+        Assert.assertTrue(myWorld.isFull(0, 1));
+        Assert.assertFalse(myWorld.percolates());
+
         myWorld.open(1, 1);
-        myWorld.open(2, 1);
-        myWorld.open(2, 2);
-        myWorld.open(3, 2);
-        myWorld.open(4, 2);
-        myWorld.open(2, 4);
-        myWorld.open(3, 4);
+        Assert.assertTrue(myWorld.isFull(1, 1));
+        Assert.assertFalse(myWorld.percolates());
+
+        myWorld.open(2, 0);
+        Assert.assertFalse(myWorld.isFull(2, 0));
+        Assert.assertFalse(myWorld.percolates());
+
+        myWorld.open(3, 0);
+        Assert.assertFalse(myWorld.isFull(3, 0));
+        Assert.assertFalse(myWorld.percolates());
+
+        myWorld.open(1, 0);
+        Assert.assertTrue(myWorld.isFull(1, 0));
+        Assert.assertFalse(myWorld.percolates());
+        Assert.assertTrue(myWorld.isFull(2, 0));
+        Assert.assertTrue(myWorld.isFull(3, 0));
 
 
+        myWorld.open(2, 3);
+        myWorld.open(3, 3);
+        myWorld.open(4, 3);
+        Assert.assertFalse(myWorld.isFull(2, 3));
+        Assert.assertFalse(myWorld.isFull(3, 3));
+        Assert.assertFalse(myWorld.isFull(4, 3));
+        Assert.assertFalse(myWorld.percolates());
+        myWorld.open(4, 0);
+        Assert.assertTrue(myWorld.isFull(4, 0));
         Assert.assertTrue(myWorld.percolates());
-        Assert.assertEquals(9, myWorld.numberOfOpenSites());
-        Assert.assertFalse(myWorld.isFull(2, 4));
+
+        Assert.assertFalse(myWorld.isFull(2, 3));
+        Assert.assertFalse(myWorld.isFull(3, 3));
+        Assert.assertFalse(myWorld.isFull(4, 3));
+
+
     }
 }
