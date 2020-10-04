@@ -117,7 +117,7 @@ public class Percolation {
         if (row < 0 || row >= N || col < 0 || col >= N) {
             throw new IndexOutOfBoundsException();
         }
-        return top.contains(xyTo1D(row, col)) && bottom.contains(xyTo1D(row, col));
+        return top.contains(xyTo1D(row, col)));
     }
 
     // number of open sites
@@ -141,7 +141,7 @@ public class Percolation {
         myWorld.open(4, 2);
         myWorld.open(2, 4);
         myWorld.open(3, 4);
-        myWorld.open(4, 4);
+
 
         Assert.assertTrue(myWorld.percolates());
         Assert.assertEquals(9,myWorld.numberOfOpenSites());
