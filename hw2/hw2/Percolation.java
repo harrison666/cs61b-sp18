@@ -2,7 +2,6 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,9 +16,9 @@ public class Percolation {
     private Set<Integer> bottom = new HashSet<>();
 
     private class Site {
-        public int x;
-        public int y;
-        public boolean isOpen;
+        private int x;
+        private int y;
+        private boolean isOpen;
 
         public Site(int x, int y) {
             this.x = x;
@@ -29,7 +28,7 @@ public class Percolation {
     }
 
     // create N-by-N grid, with all sites initially blocked
-    public Percolation(int N) throws IllegalArgumentException{
+    public Percolation(int N) throws IllegalArgumentException {
         if (N <= 0) {
             throw new IllegalArgumentException("N should be larger than 0 but got " + N);
         }
@@ -117,7 +116,7 @@ public class Percolation {
         if (row < 0 || row >= N || col < 0 || col >= N) {
             throw new IndexOutOfBoundsException();
         }
-        return top.contains(xyTo1D(row, col)));
+        return top.contains(xyTo1D(row, col));
     }
 
     // number of open sites
@@ -131,7 +130,7 @@ public class Percolation {
     }
 
     // use for unit testing (not required)
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Percolation myWorld = new Percolation(5);
         myWorld.open(0, 1);
         myWorld.open(1, 1);
@@ -144,7 +143,7 @@ public class Percolation {
 
 
         Assert.assertTrue(myWorld.percolates());
-        Assert.assertEquals(9,myWorld.numberOfOpenSites());
+        Assert.assertEquals(9, myWorld.numberOfOpenSites());
         Assert.assertFalse(myWorld.isFull(2, 4));
     }
 }

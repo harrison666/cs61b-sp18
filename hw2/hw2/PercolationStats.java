@@ -13,7 +13,7 @@ public class PercolationStats {
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
-            throw new IllegalArgumentException("N and T should both be larger than 0 but N is " + N + " and T is " + T);
+            throw new IllegalArgumentException("N and T should both be larger than 0");
         }
         thresholds = new double[T];
         this.N = N;
