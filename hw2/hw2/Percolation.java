@@ -14,6 +14,7 @@ public class Percolation {
     private WeightedQuickUnionUF dSet;
     private Set<Integer> top = new HashSet<>();
     private Set<Integer> bottom = new HashSet<>();
+    private boolean percolated = false;
 
     private class Site {
         private int x;
@@ -40,11 +41,7 @@ public class Percolation {
                 world[i][j] = new Site(i, j);
             }
         }
-        dSet = new WeightedQuickUnionUF(1001);
-        for (int i = 0; i < N; i++) {
-            dSet.union(999, xyTo1D(0, i));
-            dSet.union(1000, xyTo1D(N - 1, i));
-        }
+        dSet = new WeightedQuickUnionUF(N * N);
     }
 
     // transfer the 2D location to 1D integer
@@ -57,16 +54,21 @@ public class Percolation {
         if (row < 0 || row >= N || col < 0 || col >= N) {
             throw new IndexOutOfBoundsException();
         }
-        if (!world[row][col].isOpen) {
-            world[row][col].isOpen = true;
-            openNumber++;
-            unionNeighbors(row, col);
+        if (world[row][col].isOpen) {
+            return;
         }
+        world[row][col].isOpen = true;
+        openNumber++;
+        unionNeighbors(row, col);
         if (row == 0) {
             top.add(xyTo1D(row, col));
         }
         if (row == N - 1) {
             bottom.add(xyTo1D(row, col));
+        }
+
+        if (top.contains(xyTo1D(row, col)) && bottom.contains(xyTo1D(row, col))) {
+            percolated = true;
         }
     }
 
@@ -126,7 +128,7 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return dSet.connected(999, 1000);
+        return percolated;
     }
 
     // use for unit testing (not required)
