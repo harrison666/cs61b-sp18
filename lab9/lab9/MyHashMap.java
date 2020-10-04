@@ -112,6 +112,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (containsKey(key)) {
             size--;
             return buckets[hash(key)].remove(key);
+
         }
         return null;
     }
