@@ -208,6 +208,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
                 contents[i] = new Node(item, priority);
                 swim(i);
                 sink(i);
+                return;
             }
         }
 
