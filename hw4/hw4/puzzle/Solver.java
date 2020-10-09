@@ -1,7 +1,6 @@
 package hw4.puzzle;
 
 import edu.princeton.cs.algs4.MinPQ;
-import edu.princeton.cs.algs4.Queue;
 
 import java.util.*;
 
@@ -10,7 +9,7 @@ public class Solver {
     int finalMove;
     LinkedList<WorldState> moveSeq = new LinkedList<>();
 
-    private class Node implements Comparable<Node>{
+    private class Node implements Comparable<Node> {
         private WorldState ws;
         private int numMove;
         private Node preNode;
@@ -23,17 +22,19 @@ public class Solver {
 
         @Override
         public int compareTo(Node node) {
-            return Integer.compare(numMove + ws.estimatedDistanceToGoal(), node.numMove + node.ws.estimatedDistanceToGoal());
+            return Integer.compare(numMove + ws.estimatedDistanceToGoal(),
+                    node.numMove + node.ws.estimatedDistanceToGoal());
         }
     }
 
 
     /**
-     * Constructor which solves the puzzle, computing everything necessary for moves() and solution() to
-     * not have to solve the problem again. Solves the puzzle using the A* algorithm. Assumes a solution exists.
+     * Constructor which solves the puzzle, computing everything necessary
+     * for moves() and solution() to not have to solve the problem again.
+     * Solves the puzzle using the A* algorithm. Assumes a solution exists.
      * @param initial
      */
-    public Solver(WorldState initial){
+    public Solver(WorldState initial) {
         MinPQ<Node> pq = new MinPQ<Node>();
         Node initialNode = new Node(initial, 0, null);
         pq.insert(initialNode);

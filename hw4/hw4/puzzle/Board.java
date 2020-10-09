@@ -2,14 +2,12 @@ package hw4.puzzle;
 
 import edu.princeton.cs.algs4.Queue;
 
-import javax.xml.transform.Source;
-
-public class Board implements WorldState{
+public class Board implements WorldState {
     private int[][] tiles;
     private final int N;
     private final int BLANK = 0;
 
-    public Board(int[][] tiles){
+    public Board(int[][] tiles) {
         N = tiles.length;
         this.tiles = new int[N][N];
         for (int i = 0; i < size(); i++) {
@@ -17,7 +15,6 @@ public class Board implements WorldState{
                 this.tiles[i][j] = tiles[i][j];
             }
         }
-
     }
 
     public int tileAt(int i, int j) {
@@ -100,6 +97,7 @@ public class Board implements WorldState{
         return manhattan();
     }
 
+    @Override
     public boolean equals(Object y) {
         if (this == y) {
             return true;
@@ -119,16 +117,22 @@ public class Board implements WorldState{
       * Uncomment this method. */
     public String toString() {
         StringBuilder s = new StringBuilder();
-        int N = size();
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
         s.append("\n");
         return s.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = tiles != null ? tiles.hashCode() : 0;
+        result = 31 * result + (tiles != null ? tiles.hashCode() : 0);
+        return result;
     }
 
 }
