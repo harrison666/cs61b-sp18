@@ -115,7 +115,7 @@ public class Board implements WorldState {
             for (int j = 0; j < N; j++) {
                 if (this.tiles[i][j] != board1.tiles[i][j]) {
                     return false;
-                };
+                }
             }
         }
         return true;
