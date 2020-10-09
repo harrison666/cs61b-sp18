@@ -107,8 +107,18 @@ public class Board implements WorldState {
         }
 
         Board board1 = (Board) y;
+        if (N != board1.N) {
+            return false;
+        }
 
-        return tiles != null ? tiles.equals(board1.tiles) : board1.tiles == null;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (this.tiles[i][j] != board1.tiles[i][j]) {
+                    return false;
+                };
+            }
+        }
+        return true;
     }
 
 

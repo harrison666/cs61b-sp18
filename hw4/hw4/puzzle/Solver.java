@@ -2,12 +2,13 @@ package hw4.puzzle;
 
 import edu.princeton.cs.algs4.MinPQ;
 
-import java.util.*;
+import java.util.LinkedList;
+
 
 public class Solver {
 
-    int finalMove;
-    LinkedList<WorldState> moveSeq = new LinkedList<>();
+    private int finalMove;
+    private LinkedList<WorldState> moveSeq = new LinkedList<>();
 
     private class Node implements Comparable<Node> {
         private WorldState ws;
